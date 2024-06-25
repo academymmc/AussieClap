@@ -1,0 +1,138 @@
+<apex:page showHeader="false" applyBodyTag="false" renderAs="pdf" standardController="Invoice__c" extensions="InvoiceController">
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .content {
+                max-width: 933px;
+                margin: 30px auto 36px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .invoice-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .invoice-header img {
+                max-width: 30%;
+                height: auto;
+            }
+            .invoice-header h1 {
+                font-size: 30px;
+                margin: 0;
+            }
+            .terms-conditions {
+                font-size: 12px;
+                margin-top: 20px;
+            }
+            .totals td {
+                padding: 8px;
+                text-align: right;
+                font-weight: bold;
+            }
+            .totals .total-label {
+                text-align: left;
+                font-weight: normal;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <!-- Invoice Header -->
+            <div class="invoice-header">
+                <img src="{!$Resource.AussieClapLogo}" alt="Company Logo"/>
+                <h1>INVOICE</h1>
+            </div>
+
+            <!-- Billing and Shipping Information -->
+            <table>
+                <tr>
+                    <td style="width: 50%;">
+                        <b>Bill To:</b><br/>
+                        {!Invoice__c.Account__r.BillingStreet}<br/>
+                        {!Invoice__c.Account__r.BillingCity}, {!Invoice__c.Account__r.BillingState} {!Invoice__c.Account__r.BillingPostalCode}<br/>
+                        {!Invoice__c.Account__r.BillingCountry}<br/><br/>
+                        <b>Phone:</b> {!Invoice__c.Account__r.Phone}
+                    </td>
+                    <td style="width: 50%;">
+                        <b>Ship To:</b><br/>
+                        {!Invoice__c.Account__r.ShippingStreet}<br/>
+                        {!Invoice__c.Account__r.ShippingCity}, {!Invoice__c.Account__r.ShippingState} {!Invoice__c.Account__r.ShippingPostalCode}<br/>
+                        {!Invoice__c.Account__r.ShippingCountry}
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Invoice Details -->
+            <table>
+                <tr>
+                    <td><b>Customer Name:</b> {!Invoice__c.Contact__r.Name}</td>
+                    <td><b>Invoice No:</b> {!Invoice__c.Name}</td>
+                    <td><b>Invoice Date:</b> <apex:outputText value="{0,date,MM'/'dd'/'yyyy}"><apex:param value="{!Invoice__c.Invoice_Created_Date__c}" /></apex:outputText></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>Remit To:</b><br/>
+                        4, St. Andrews Dr, Werribee, VIC 3030, Australia</td>
+                </tr>
+            </table>
+
+            <!-- Line Items and Totals -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item Description</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!lineItems}" var="item">
+                        <tr>
+                            <td>{!item.Item__c}</td>
+                            <td>{!item.Quantity__c}</td>
+                            <td>${!item.Unit_Price__c}</td>
+                        </tr>
+                    </apex:repeat>
+                    <!-- Total, Discount, Tax, and Grand Total Rows -->
+                    <tr>
+                        <td colspan="2" class="total-label"><b>Total Price:</b></td>
+                        <td>${!totalNetAmount}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="total-label"><b>Discount:</b></td>
+                        <td>${!Invoice__c.Discount__c}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="total-label"><b>Tax Amount:</b></td>
+                        <td>${!Invoice__c.Tax_Amount__c}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="total-label"><b>Grand Total:</b></td>
+                        <td>${!Invoice__c.Grand_Total__c}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Terms and Conditions -->
+            <div class="terms-conditions">
+                <b>Terms and Conditions:</b><br/>
+                This is to certify that the above information is true and correct as per our records. Payment is due within 30 days from the date of this invoice. Late payments may incur additional charges.<br/><br/>
+                Thank you for your business.
+            </div>
+        </div>
+    </body>
+</apex:page>

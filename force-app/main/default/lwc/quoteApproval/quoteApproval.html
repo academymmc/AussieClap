@@ -1,0 +1,75 @@
+<template>
+    <lightning-card title="Quote Approval" class="quote-approval-card">
+        <div class="slds-p-around_medium">
+            <lightning-record-view-form record-id={recordId} object-api-name="Quote">
+                <template if:true={quoteData}>
+                    <div class="header-details-box">
+                        <div class="detail-row">
+                            <div class="detail-label">Name:</div>
+                            <div class="detail-value">{quoteData.name}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Status:</div>
+                            <div class="detail-value">{quoteData.status}</div>
+                        </div>
+                    </div>
+                    <div class="quote-line-items-box">
+                        <template if:true={quoteData.quoteLineItems}>
+                            <p><strong>Quote Line Items:</strong></p>
+                            <lightning-datatable
+                                key-field="Id"
+                                data={quoteData.quoteLineItems}
+                                columns={quoteLineItemColumns}
+                                hide-checkbox-column
+                                show-row-number-column>
+                            </lightning-datatable>
+                        </template>
+                    </div>
+                    <div class="quote-details-box">
+                        <div class="detail-row">
+                            <div class="detail-label">Total:</div>
+                            <div class="detail-value">${quoteData.subtotal}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Discount:</div>
+                            <div class="detail-value">{quoteData.discount}%</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Subtotal:</div>
+                            <div class="detail-value">${quoteData.total}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Tax:</div>
+                            <div class="detail-value">${quoteData.tax}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Grand Total:</div>
+                            <div class="detail-value">${quoteData.grandTotal}</div>
+                        </div>
+                    </div>
+                </template>
+            </lightning-record-view-form>
+            <div class="button-container">
+                <template if:false={isQuoteFinalized}>
+                    <lightning-button 
+                        label="Accept" 
+                        onclick={handleApprove} 
+                        variant="success" 
+                        disabled={isDisabled}>
+                    </lightning-button>
+                    <lightning-button 
+                        label="Deny" 
+                        onclick={handleReject} 
+                        variant="destructive" 
+                        disabled={isDisabled}>
+                    </lightning-button>
+                </template>
+                <template if:true={isQuoteFinalized}>
+                    <div class="status-text">
+                        {quoteStatusMessage}
+                    </div>
+                </template>
+            </div>
+        </div>
+    </lightning-card>
+</template>

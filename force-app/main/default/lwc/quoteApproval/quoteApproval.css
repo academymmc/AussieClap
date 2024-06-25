@@ -1,0 +1,57 @@
+.quote-approval-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-details-box, .quote-line-items-box, .quote-details-box {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.detail-label {
+    flex: 0 0 auto;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.detail-value {
+    flex: 1;
+}
+
+.lightning-output-field {
+    display: inline-block;
+    width: 100%;
+}
+
+.datatable-box {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.button-container lightning-button {
+    margin-right: 10px;
+}
+
+.status-text {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #0070d2;
+    padding: 10px 0;
+}
